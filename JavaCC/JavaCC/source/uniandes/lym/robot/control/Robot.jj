@@ -4,10 +4,7 @@ Autor: Alejandro Arango
 Modificado por: Silvia Takahashi
 Modificado por: Juan Pablo Morales.
 Agregadas producciones para manejar globos
-Modificado por Silvia Takahashi
-
-
- **/
+Modificado por Silvia Takahashi*/
 
 
 options 
@@ -246,11 +243,27 @@ void X ():
 {
 	(< NAME >|< NUMS >)
 }
+void dir ():
+{}
+{
+	(< FRONT >|< RIGHT>|< LEFT >|< BACK >)
+}
+void otn ():
+{}
+{
+	(< NORTH >|< SOUTH >|< EAST >|< WEST >)
+}
 void OBJ ():
 {}
 {
 	(< BALOONS >|< CHIPS >)
 }
+void D ():
+{}
+{
+	(< LEFT >|< RIGHT >|< AROUND >)
+}
+
 
 void s0 ():
 {}
@@ -304,7 +317,18 @@ void blocks ():
 void command ():
 { }
 {
-	< ASSIGNTO>":"< NUMS >, < NAME >
+	assignto()
+| 	go_to()
+| 	put()
+| 	pick()
+| 	movetothe()
+| 	moveindir()
+| 	jumptothe()
+| 	jumpindir()
+| 	move()
+| 	turn()
+| 	face()
+| 	nop()
 }
 
 void assignto ():
@@ -312,7 +336,7 @@ void assignto ():
 {
  	< ASSIGNTO > ":" < NUMS > "," < NAME >
 }
-void goto ():
+void go_to ():
 { }
 {
  	< GOTO > ":" < X >","< X >
@@ -320,52 +344,52 @@ void goto ():
 void put ():
 { }
 {
-	< X > "," < OBJ >
+	< PUT > ":" < X > "," < OBJ >
 }
 void pick ():
 { }
 {
-  
+ 	< PICK > ":" < X > "," < OBJ >	
 }
 void movetothe ():
 { }
 {
-  
+  < MOVETOTHE > ":" < X > "," < DIR >
 }
 void moveindir ():
 { }
-{
-  
+{	
+ 	 < MOVEINDIR > ":"< X > "," < OTN >
 }
 void jumptothe ():
 { }
 {
-  
+ 	< JUMPTOTHE > ":" < X > "," < DIR > 
 }
 void jumpindir ():
 { }
 {
-  
+ 	< JUMPINDIR > ":"< X > "," < OTN >
 }
 void move ():
 { }
 {
-  
+  	< MOVE > ":" < X >
 }
 void turn ():
 { }
 {
-  
+  < TURN > ":" < D > 
 }
 void face ():
 { }
 {
-  
+  < FACE > ":" < OTN >
 }
-void nope ():
+void nop ():
 { }
 {
-  
+	< NOP > ":"  
 }
 
 
@@ -380,7 +404,7 @@ void control ():
 void conditional ():
 { }
 {
-	< IF > ":" 
+	<IF> ":" condition() <THEN> ":" blocks() <ELSE> ":" blocks() 
 }
 
 void condition ():
@@ -448,12 +472,12 @@ void not()
 void loop ():
 { }
 {
-	
+	<WHILE> ":" condition() <DO> ":" blocks()
 }
 void repeat ():
 { }
 {
-	
+	<REPEAT> ":" (<NUMS>|<NAME>) blocks()
 }
 
 void call ():
