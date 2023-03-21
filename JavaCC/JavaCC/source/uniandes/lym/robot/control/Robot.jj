@@ -420,49 +420,49 @@ void condition ():
 |	not()
 }
 
-void facing ()
+void facing ():
 {}
 {
 	<FACING> ":" (<NORTH>|<SOUTH>|<EAST>|<WEST>)	
 }
 
-void canput()
+void canput():
 {}
 {
 	<CANPUT> ":" <NAME> "," (<BALOONS> | <CHIPS>)	
 }
 
-void canpick()
+void canpick():
 {}
 {
 	<CANPICK> ":" <NAME> "," (<BALOONS> | <CHIPS>)
 }
 
-void canmoveindir()
+void canmoveindir():
 {}
 {
 	<CANMOVEINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
 }
 
-void canjumpindir()
+void canjumpindir():
 {}
 {
 	<CANJUMPINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
 }
 
-void canmovetothe()
+void canmovetothe():
 {}
 {
 	<CANMOVETOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
 }
 
-void canjumptothe()
+void canjumptothe():
 {}
 {
 	<CANJUMPTOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
 }
 
-void not()
+void not():
 {}
 {
 	<NOT> ":" condition()
@@ -483,7 +483,11 @@ void repeat ():
 void call ():
 { }
 {
-	"[" instructions() "]"
+	< NAME > ":" args() 
 }
 
-
+void args():
+{}
+{
+  	< X >(","< X >)*
+}
