@@ -329,7 +329,7 @@ void params ():
 void instructions ():
 { }
 {
-	(command()|control()|call())(";"(command()|control()|call())*)
+	(commands()|control()|call())(";"(commands()|control()|call())*)
 }
 
 void blocks ():
@@ -339,12 +339,12 @@ void blocks ():
 }
 
 /*COMANDOS*/
-void command ():
+void commands ():
 { }
 {
 	assignto()
 | 	go_to()
-| 	put()
+| 	put2()
 | 	pick()
 | 	movetothe()
 | 	moveindir()
@@ -366,7 +366,7 @@ void go_to ():
 {
  	< GOTO > ":" X()"," X()
 }
-void put ():
+void put2 ():
 { }
 {
 	< PUT > ":" X() "," OBJ()
@@ -503,7 +503,7 @@ void loop ():
 void repeat ():
 { }
 {
-	<REPEAT> 
+	<REPEAT> ":" X() blocks()
 }
 
 void call ():

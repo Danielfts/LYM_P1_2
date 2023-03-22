@@ -32,6 +32,76 @@ public interface RobotConstants {
   int NUM = 14;
   /** RegularExpression Id. */
   int DIGIT = 15;
+  /** RegularExpression Id. */
+  int MAY = 20;
+  /** RegularExpression Id. */
+  int MIN = 21;
+  /** RegularExpression Id. */
+  int NAME = 22;
+  /** RegularExpression Id. */
+  int FACING = 23;
+  /** RegularExpression Id. */
+  int CANPUT = 24;
+  /** RegularExpression Id. */
+  int CANPICK = 25;
+  /** RegularExpression Id. */
+  int CANMOVEINDIR = 26;
+  /** RegularExpression Id. */
+  int CANJUMPINDIR = 27;
+  /** RegularExpression Id. */
+  int CANMOVETOTHE = 28;
+  /** RegularExpression Id. */
+  int CANJUMPTOTHE = 29;
+  /** RegularExpression Id. */
+  int NOT = 30;
+  /** RegularExpression Id. */
+  int ASSIGNTO = 31;
+  /** RegularExpression Id. */
+  int GOTO = 32;
+  /** RegularExpression Id. */
+  int MOVE = 33;
+  /** RegularExpression Id. */
+  int TURN = 34;
+  /** RegularExpression Id. */
+  int FACE = 35;
+  /** RegularExpression Id. */
+  int MOVETOTHE = 36;
+  /** RegularExpression Id. */
+  int MOVEINDIR = 37;
+  /** RegularExpression Id. */
+  int JUMPTOTHE = 38;
+  /** RegularExpression Id. */
+  int JUMPINDIR = 39;
+  /** RegularExpression Id. */
+  int NOP = 40;
+  /** RegularExpression Id. */
+  int IF = 41;
+  /** RegularExpression Id. */
+  int THEN = 42;
+  /** RegularExpression Id. */
+  int ELSE = 43;
+  /** RegularExpression Id. */
+  int WHILE = 44;
+  /** RegularExpression Id. */
+  int DO = 45;
+  /** RegularExpression Id. */
+  int REPEAT = 46;
+  /** RegularExpression Id. */
+  int FRONT = 47;
+  /** RegularExpression Id. */
+  int LEFT = 48;
+  /** RegularExpression Id. */
+  int BACK = 49;
+  /** RegularExpression Id. */
+  int NORTH = 50;
+  /** RegularExpression Id. */
+  int SOUTH = 51;
+  /** RegularExpression Id. */
+  int EAST = 52;
+  /** RegularExpression Id. */
+  int WEST = 53;
+  /** RegularExpression Id. */
+  int AROUND = 54;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -58,6 +128,48 @@ public interface RobotConstants {
     "\")\"",
     "\",\"",
     "\";\"",
+    "<MAY>",
+    "<MIN>",
+    "<NAME>",
+    "\"facing\"",
+    "\"canput\"",
+    "\"canpick\"",
+    "\"canmoveindir\"",
+    "\"canjumpindir\"",
+    "\"canmovetothe\"",
+    "\"canjumptothe\"",
+    "\"not\"",
+    "\"assignto\"",
+    "\"goto\"",
+    "\"move\"",
+    "\"turn\"",
+    "\"face\"",
+    "\"movetothe\"",
+    "\"moveindir\"",
+    "\"jumptothe\"",
+    "\"jumpindir\"",
+    "\"nop\"",
+    "\"if\"",
+    "\"then\"",
+    "\"else\"",
+    "\"while\"",
+    "\"do\"",
+    "\"repeat\"",
+    "\"front\"",
+    "\"left\"",
+    "\"back\"",
+    "\"north\"",
+    "\"south\"",
+    "\"east\"",
+    "\" west\"",
+    "\"around\"",
+    "\"ROBOT_R\"",
+    "\"VARS\"",
+    "\"PROCS\"",
+    "\"[\"",
+    "\"|\"",
+    "\"]\"",
+    "\":\"",
   };
 
 }
