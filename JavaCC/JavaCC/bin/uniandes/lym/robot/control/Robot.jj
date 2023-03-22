@@ -4,10 +4,7 @@ Autor: Alejandro Arango
 Modificado por: Silvia Takahashi
 Modificado por: Juan Pablo Morales.
 Agregadas producciones para manejar globos
-Modificado por Silvia Takahashi
-
-
- **/
+Modificado por Silvia Takahashi*/
 
 
 options 
@@ -45,6 +42,42 @@ public class Robot
 	}
 
 	String salida=new String();
+
+	public static void main(String args []) throws ParseException
+  {
+    Robot parser = new Robot(System.in);
+    while (true)
+    {
+      System.out.println("Reading from standard input...");
+      System.out.print("Enter an expression like \"1+(2+3)*4;\" :");
+      try
+      {
+        switch (exp.one_line())
+        {
+          case 0 : 
+          System.out.println("OK.");
+          break;
+          case 1 : 
+          System.out.println("Goodbye.");
+          break;
+          default : 
+          break;
+        }
+      }
+      catch (Exception e)
+      {
+        System.out.println("NOK.");
+        System.out.println(e.getMessage());
+        exp.ReInit(System.in);
+      }
+      catch (Error e)
+      {
+        System.out.println("Oops.");
+        System.out.println(e.getMessage());
+        break;
+      }
+    }
+  }
 }
 PARSER_END(Robot)
 
@@ -56,7 +89,7 @@ SKIP:
 	| "\n"
 }
 
-TOKEN: /* Nombres de Comandos */
+TOKEN: /* Nombres de Comandos de bajo nivel*/
 {
 
 			<MOV:  "Mov">
@@ -69,7 +102,7 @@ TOKEN: /* Nombres de Comandos */
 
 }
 
-TOKEN:
+TOKEN: /* Nombres de objetos de bajo nivel*/
 {
 		<BALLOONS:  "BALLOONS" >
 		|	<CHIPS:     "CHIPS"  >	
@@ -78,7 +111,7 @@ TOKEN:
 
 
 
-TOKEN :
+TOKEN : /*Definición de un entero*/
 {
 		<NUM: (<DIGIT>)+ >
 		|  	<#DIGIT: ["0"-"9"] >
@@ -87,17 +120,22 @@ TOKEN :
 
 
 
-	//boolean command(uniandes.lym.robot.view.Console sistema) :
-	boolean command(Console sistema):
+/* Que rayos es esto profe */
+//boolean command(uniandes.lym.robot.view.Console sistema) :
+boolean command(Console sistema):
 	{	
 		
 		int x,y;
 		salida=new String();	
 	}
 
+/* Reglas de producción???*/
+/* '|' son or's */
+/* PREGUNAR POR ESTA VAINA world.turnRight();salida = "Command: Turnright"; */
 	
 	{
-		(		  (
+		(
+		  (
 		   <RIGHT> "(" ")" {world.turnRight();salida = "Command: Turnright";}
 		| 	<MOV>  "(" x=num() ")" {world.moveForward(x,false);salida = "Command: Moveforward ";}  
 		| 	<HOP>  "(" x=num() ")" {world.moveForward(x,true);salida = "Command:Jumpforward ";}
@@ -131,7 +169,7 @@ TOKEN :
 
 	}
 
-	void get() :
+void get() :
 	{
 		int f=1;	
 	}
@@ -169,4 +207,313 @@ TOKEN :
 		}
 	}
 
-	
+/*TOKENS DE LENGUAJE DE ALTO NIVEL */
+
+TOKEN:
+{
+	< #MAY: ["A"-"B"] >
+|   < #MIN: ["a"-"b"]>
+| 	< NAME: (<MAY>|<MIN>)+ (<MAY>|<MIN>|<NUM>)*>
+}
+
+/* CONDICIONES*/
+TOKEN:
+{
+		< FACING: "facing">
+	| 	< CANPUT: "canput">
+	| 	< CANPICK: "canpick" >
+	| 	< CANMOVEINDIR: "canmoveindir" >
+	| 	< CANJUMPINDIR: "canjumpindir" >
+	| 	< CANMOVETOTHE: "canmovetothe" >
+	| 	< CANJUMPTOTHE: "canjumptothe" >
+	| 	< NOT:	"not" >
+	|   < ASSIGNTO: "assignto" >
+	|	< GOTO: "goto">
+	| 	< MOVE: "move">
+	| 	< TURN: "turn">
+	| 	< FACE: "face">
+	| 	< MOVETOTHE: "movetothe">
+	| 	< MOVEINDIR: "moveindir">
+	| 	< JUMPTOTHE: "jumptothe">
+	| 	< JUMPINDIR: "jumpindir">
+	|  	< NOP:"nop" >
+}
+
+/*CONTROL*/
+TOKEN:
+{
+ 	< IF: "if" >
+| 	< THEN: "then" >
+| 	< ELSE: "else" >
+| 	< WHILE: "while" >
+| 	< DO: "do" >
+| 	< REPEAT: "repeat" >
+}
+
+TOKEN:
+{
+ 	< FRONT: "front" >
+| 	< LEFT: "left" >
+| 	< BACK: "back" >
+| 	< NORTH: "north" >
+| 	< SOUTH: "south" >
+| 	< EAST: "east">
+|	< WEST: " west" >
+| 	< AROUND: "around">
+}
+
+
+void X ():
+{}
+{
+	(< NAME >|< NUM >)
+}
+void DIR ():
+{}
+{
+	(< FRONT >|< RIGHT>|< LEFT >|< BACK >)
+}
+void OTN ():
+{}
+{
+	(< NORTH >|< SOUTH >|< EAST >|< WEST >)
+}
+void OBJ ():
+{}
+{
+	(< BALLOONS >|< CHIPS >)
+}
+void D ():
+{}
+{
+	(< LEFT >|< RIGHT >|< AROUND >)
+}
+
+
+void s0 ():
+{}
+{
+	"ROBOT_R" body()
+}
+
+void body ():
+{}
+{
+  vars() procs() blocks()
+}
+
+void vars ():
+{ }
+{
+	"VARS" < NAME >(","< NAME >)* 
+}
+
+void procs ():
+{ }
+{
+	"PROCS" definition()
+}
+
+void definition():
+{}
+{
+  "[" "|" params() "|" instructions() "]"
+}
+
+void params ():
+{ }
+{
+	< NAME >(","< NAME >)* 
+}
+
+void instructions ():
+{ }
+{
+	(command()|control()|call())(";"(command()|control()|call())*)
+}
+
+void blocks ():
+{ }
+{
+	"[" instructions() "]"
+}
+
+/*COMANDOS*/
+void command ():
+{ }
+{
+	assignto()
+| 	go_to()
+| 	put()
+| 	pick()
+| 	movetothe()
+| 	moveindir()
+| 	jumptothe()
+| 	jumpindir()
+| 	move()
+| 	turn()
+| 	face()
+| 	nop()
+}
+
+void assignto ():
+{ }
+{
+ 	< ASSIGNTO > ":" < NUM > "," < NAME >
+}
+void go_to ():
+{ }
+{
+ 	< GOTO > ":" X()"," X()
+}
+void put ():
+{ }
+{
+	< PUT > ":" X() "," OBJ()
+}
+void pick ():
+{ }
+{
+ 	< PICK > ":" X() "," OBJ()
+}
+void movetothe ():
+{ }
+{
+  < MOVETOTHE > ":" X() "," OBJ()
+}
+void moveindir ():
+{ }
+{	
+ 	 < MOVEINDIR > ":"X() "," OTN()
+}
+void jumptothe ():
+{ }
+{
+ 	< JUMPTOTHE > ":" X() "," DIR()
+}
+void jumpindir ():
+{ }
+{
+ 	< JUMPINDIR > ":"X() "," OTN()
+}
+void move ():
+{ }
+{
+  	< MOVE > ":" X()
+}
+void turn ():
+{ }
+{
+  < TURN > ":" D() 
+}
+void face ():
+{ }
+{
+  < FACE > ":" OTN()
+}
+void nop ():
+{ }
+{
+	< NOP > ":"  
+}
+
+
+/*CONTROL*/
+void control ():
+{ }
+{
+	conditional() | loop() | repeat()
+}
+
+/*CONDICIONALES*/
+void conditional ():
+{ }
+{
+	<IF> ":" condition() <THEN> ":" blocks() <ELSE> ":" blocks() 
+}
+
+void condition ():
+{}
+{
+	facing()
+|	canput()
+|	canpick()
+|	canmoveindir()
+|	canjumpindir()
+|	canmovetothe()
+|	canjumptothe()
+|	not()
+}
+
+void facing ():
+{}
+{
+	<FACING> ":" (<NORTH>|<SOUTH>|<EAST>|<WEST>)	
+}
+
+void canput():
+{}
+{
+	<CANPUT> ":" <NAME> "," (<BALLOONS> | <CHIPS>)	
+}
+
+void canpick():
+{}
+{
+	<CANPICK> ":" <NAME> "," (<BALLOONS> | <CHIPS>)
+}
+
+void canmoveindir():
+{}
+{
+	<CANMOVEINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
+}
+
+void canjumpindir():
+{}
+{
+	<CANJUMPINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
+}
+
+void canmovetothe():
+{}
+{
+	<CANMOVETOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
+}
+
+void canjumptothe():
+{}
+{
+	<CANJUMPTOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
+}
+
+void not():
+{}
+{
+	<NOT> ":" condition()
+}
+
+
+void loop ():
+{ }
+{
+	<WHILE> ":" condition() <DO> ":" blocks()
+}
+
+void repeat ():
+{ }
+{
+	<REPEAT> 
+}
+
+void call ():
+{ }
+{
+	< NAME > ":" args() 
+}
+
+void args():
+{}
+{
+  	X()(","X())*
+}

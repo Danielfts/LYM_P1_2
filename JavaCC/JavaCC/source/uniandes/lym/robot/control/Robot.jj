@@ -42,6 +42,42 @@ public class Robot
 	}
 
 	String salida=new String();
+
+	public static void main(String args []) throws ParseException
+  {
+    Robot parser = new Robot(System.in);
+    while (true)
+    {
+      System.out.println("Reading from standard input...");
+      System.out.print("Enter an expression like \"1+(2+3)*4;\" :");
+      try
+      {
+        switch (exp.one_line())
+        {
+          case 0 : 
+          System.out.println("OK.");
+          break;
+          case 1 : 
+          System.out.println("Goodbye.");
+          break;
+          default : 
+          break;
+        }
+      }
+      catch (Exception e)
+      {
+        System.out.println("NOK.");
+        System.out.println(e.getMessage());
+        exp.ReInit(System.in);
+      }
+      catch (Error e)
+      {
+        System.out.println("Oops.");
+        System.out.println(e.getMessage());
+        break;
+      }
+    }
+  }
 }
 PARSER_END(Robot)
 
@@ -177,36 +213,31 @@ TOKEN:
 {
 	< #MAY: ["A"-"B"] >
 |   < #MIN: ["a"-"b"]>
-| 	< #NUM: ["0" -"9"]>
 | 	< NAME: (<MAY>|<MIN>)+ (<MAY>|<MIN>|<NUM>)*>
-| 	< NUMS: (< NUM >)+>
 }
 
 /* CONDICIONES*/
 TOKEN:
 {
-	< FACING: "facing">
-| 	< CANPUT: "canput">
-| 	< CANPICK: "canpick" >
-| 	< CANMOVEINDIR: "canmoveindir" >
-| 	< CANJUMPINDIR: "canjumpindir" >
-| 	< CANMOVETOTHE: "canmovetothe" >
-| 	< CANJUMPTOTHE: "canjumptothe" >
-| 	< NOT:	"not" >
-|   < ASSIGNTO: "assignto" >
-|	< GOTO: "goto">
-| 	< MOVE: "move">
-| 	< TURN: "turn">
-| 	< FACE: "face">
-| 	< PUT: "put">
-| 	< PICK: "pick">
-| 	< MOVETOTHE: "movetothe">
-| 	< MOVEINDIR: "moveindir">
-| 	< JUMPTOTHE: "jumptothe">
-| 	< JUMPINDIR: "jumpindir">
-|  	< NOP: "nop" >
+		< FACING: "facing">
+	| 	< CANPUT: "canput">
+	| 	< CANPICK: "canpick" >
+	| 	< CANMOVEINDIR: "canmoveindir" >
+	| 	< CANJUMPINDIR: "canjumpindir" >
+	| 	< CANMOVETOTHE: "canmovetothe" >
+	| 	< CANJUMPTOTHE: "canjumptothe" >
+	| 	< NOT:	"not" >
+	|   < ASSIGNTO: "assignto" >
+	|	< GOTO: "goto">
+	| 	< MOVE: "move">
+	| 	< TURN: "turn">
+	| 	< FACE: "face">
+	| 	< MOVETOTHE: "movetothe">
+	| 	< MOVEINDIR: "moveindir">
+	| 	< JUMPTOTHE: "jumptothe">
+	| 	< JUMPINDIR: "jumpindir">
+	|  	< NOP:"nop" >
 }
-
 
 /*CONTROL*/
 TOKEN:
@@ -222,7 +253,6 @@ TOKEN:
 TOKEN:
 {
  	< FRONT: "front" >
-| 	< RIGHT: "right" >
 | 	< LEFT: "left" >
 | 	< BACK: "back" >
 | 	< NORTH: "north" >
@@ -232,23 +262,18 @@ TOKEN:
 | 	< AROUND: "around">
 }
 
-TOKEN:
-{
-  	< BALLOONS:"balloons" >
-  	< CHIPS: "chips"> 
-}
 
 void X ():
 {}
 {
-	(< NAME >|< NUMS >)
+	(< NAME >|< NUM >)
 }
-void dir ():
+void DIR ():
 {}
 {
 	(< FRONT >|< RIGHT>|< LEFT >|< BACK >)
 }
-void otn ():
+void OTN ():
 {}
 {
 	(< NORTH >|< SOUTH >|< EAST >|< WEST >)
@@ -256,7 +281,7 @@ void otn ():
 void OBJ ():
 {}
 {
-	(< BALOONS >|< CHIPS >)
+	(< BALLOONS >|< CHIPS >)
 }
 void D ():
 {}
@@ -334,57 +359,57 @@ void command ():
 void assignto ():
 { }
 {
- 	< ASSIGNTO > ":" < NUMS > "," < NAME >
+ 	< ASSIGNTO > ":" < NUM > "," < NAME >
 }
 void go_to ():
 { }
 {
- 	< GOTO > ":" < X >","< X >
+ 	< GOTO > ":" X()"," X()
 }
 void put ():
 { }
 {
-	< PUT > ":" < X > "," < OBJ >
+	< PUT > ":" X() "," OBJ()
 }
 void pick ():
 { }
 {
- 	< PICK > ":" < X > "," < OBJ >	
+ 	< PICK > ":" X() "," OBJ()
 }
 void movetothe ():
 { }
 {
-  < MOVETOTHE > ":" < X > "," < DIR >
+  < MOVETOTHE > ":" X() "," OBJ()
 }
 void moveindir ():
 { }
 {	
- 	 < MOVEINDIR > ":"< X > "," < OTN >
+ 	 < MOVEINDIR > ":"X() "," OTN()
 }
 void jumptothe ():
 { }
 {
- 	< JUMPTOTHE > ":" < X > "," < DIR > 
+ 	< JUMPTOTHE > ":" X() "," DIR()
 }
 void jumpindir ():
 { }
 {
- 	< JUMPINDIR > ":"< X > "," < OTN >
+ 	< JUMPINDIR > ":"X() "," OTN()
 }
 void move ():
 { }
 {
-  	< MOVE > ":" < X >
+  	< MOVE > ":" X()
 }
 void turn ():
 { }
 {
-  < TURN > ":" < D > 
+  < TURN > ":" D() 
 }
 void face ():
 { }
 {
-  < FACE > ":" < OTN >
+  < FACE > ":" OTN()
 }
 void nop ():
 { }
@@ -429,13 +454,13 @@ void facing ():
 void canput():
 {}
 {
-	<CANPUT> ":" <NAME> "," (<BALOONS> | <CHIPS>)	
+	<CANPUT> ":" <NAME> "," (<BALLOONS> | <CHIPS>)	
 }
 
 void canpick():
 {}
 {
-	<CANPICK> ":" <NAME> "," (<BALOONS> | <CHIPS>)
+	<CANPICK> ":" <NAME> "," (<BALLOONS> | <CHIPS>)
 }
 
 void canmoveindir():
@@ -474,10 +499,11 @@ void loop ():
 {
 	<WHILE> ":" condition() <DO> ":" blocks()
 }
+
 void repeat ():
 { }
 {
-	<REPEAT> ":" (<NUMS>|<NAME>) blocks()
+	<REPEAT> 
 }
 
 void call ():
@@ -489,5 +515,5 @@ void call ():
 void args():
 {}
 {
-  	< X >(","< X >)*
+  	X()(","X())*
 }
