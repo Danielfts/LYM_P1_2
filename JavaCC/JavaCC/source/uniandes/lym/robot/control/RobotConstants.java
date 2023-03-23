@@ -11,97 +11,95 @@ public interface RobotConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int MOV = 5;
+  int BALLOONS = 5;
   /** RegularExpression Id. */
-  int RIGHT = 6;
+  int CHIPS = 6;
   /** RegularExpression Id. */
-  int PUT = 7;
+  int NUM = 7;
   /** RegularExpression Id. */
-  int PICK = 8;
+  int DIGIT = 8;
   /** RegularExpression Id. */
-  int POP = 9;
+  int VARS = 9;
   /** RegularExpression Id. */
-  int GO = 10;
+  int PROCS = 10;
   /** RegularExpression Id. */
-  int HOP = 11;
+  int INIT = 11;
   /** RegularExpression Id. */
-  int BALLOONS = 12;
+  int FACING = 12;
   /** RegularExpression Id. */
-  int CHIPS = 13;
+  int CANPUT = 13;
   /** RegularExpression Id. */
-  int NUM = 14;
+  int CANPICK = 14;
   /** RegularExpression Id. */
-  int DIGIT = 15;
+  int CANMOVEINDIR = 15;
   /** RegularExpression Id. */
-  int MAY = 20;
+  int CANJUMPINDIR = 16;
   /** RegularExpression Id. */
-  int MIN = 21;
+  int CANMOVETOTHE = 17;
   /** RegularExpression Id. */
-  int NAME = 22;
+  int CANJUMPTOTHE = 18;
   /** RegularExpression Id. */
-  int FACING = 23;
+  int NOT = 19;
   /** RegularExpression Id. */
-  int CANPUT = 24;
+  int ASSIGNTO = 20;
   /** RegularExpression Id. */
-  int CANPICK = 25;
+  int GOTO = 21;
   /** RegularExpression Id. */
-  int CANMOVEINDIR = 26;
+  int MOVE = 22;
   /** RegularExpression Id. */
-  int CANJUMPINDIR = 27;
+  int TURN = 23;
   /** RegularExpression Id. */
-  int CANMOVETOTHE = 28;
+  int FACE = 24;
   /** RegularExpression Id. */
-  int CANJUMPTOTHE = 29;
+  int MOVETOTHE = 25;
   /** RegularExpression Id. */
-  int NOT = 30;
+  int MOVEINDIR = 26;
   /** RegularExpression Id. */
-  int ASSIGNTO = 31;
+  int JUMPTOTHE = 27;
   /** RegularExpression Id. */
-  int GOTO = 32;
+  int JUMPINDIR = 28;
   /** RegularExpression Id. */
-  int MOVE = 33;
+  int NOP = 29;
   /** RegularExpression Id. */
-  int TURN = 34;
+  int PUT = 30;
   /** RegularExpression Id. */
-  int FACE = 35;
+  int PICK = 31;
   /** RegularExpression Id. */
-  int MOVETOTHE = 36;
+  int IF = 32;
   /** RegularExpression Id. */
-  int MOVEINDIR = 37;
+  int THEN = 33;
   /** RegularExpression Id. */
-  int JUMPTOTHE = 38;
+  int ELSE = 34;
   /** RegularExpression Id. */
-  int JUMPINDIR = 39;
+  int WHILE = 35;
   /** RegularExpression Id. */
-  int NOP = 40;
+  int DO = 36;
   /** RegularExpression Id. */
-  int IF = 41;
+  int REPEAT = 37;
   /** RegularExpression Id. */
-  int THEN = 42;
+  int FRONT = 38;
   /** RegularExpression Id. */
-  int ELSE = 43;
+  int LEFT = 39;
   /** RegularExpression Id. */
-  int WHILE = 44;
+  int RIGHT = 40;
   /** RegularExpression Id. */
-  int DO = 45;
+  int BACK = 41;
   /** RegularExpression Id. */
-  int REPEAT = 46;
+  int NORTH = 42;
   /** RegularExpression Id. */
-  int FRONT = 47;
+  int SOUTH = 43;
   /** RegularExpression Id. */
-  int LEFT = 48;
+  int EAST = 44;
   /** RegularExpression Id. */
-  int BACK = 49;
+  int WEST = 45;
   /** RegularExpression Id. */
-  int NORTH = 50;
+  int AROUND = 46;
   /** RegularExpression Id. */
-  int SOUTH = 51;
+  int MAY = 47;
   /** RegularExpression Id. */
-  int EAST = 52;
+  int MIN = 48;
   /** RegularExpression Id. */
-  int WEST = 53;
-  /** RegularExpression Id. */
-  int AROUND = 54;
+  int NAME = 49;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -113,24 +111,13 @@ public interface RobotConstants {
     "\"\\r\"",
     "\"\\t\"",
     "\"\\n\"",
-    "\"Mov\"",
-    "\"RIGHT\"",
-    "\"Put\"",
-    "\"Pick\"",
-    "\"Pop\"",
-    "\"GO\"",
-    "\"HOP\"",
     "\"BALLOONS\"",
     "\"CHIPS\"",
     "<NUM>",
     "<DIGIT>",
-    "\"(\"",
-    "\")\"",
-    "\",\"",
-    "\";\"",
-    "<MAY>",
-    "<MIN>",
-    "<NAME>",
+    "\"VARS\"",
+    "\"PROCS\"",
+    "\"ROBOT_R\"",
     "\"facing\"",
     "\"canput\"",
     "\"canpick\"",
@@ -149,6 +136,8 @@ public interface RobotConstants {
     "\"jumptothe\"",
     "\"jumpindir\"",
     "\"nop\"",
+    "\"put\"",
+    "\"pick\"",
     "\"if\"",
     "\"then\"",
     "\"else\"",
@@ -157,15 +146,18 @@ public interface RobotConstants {
     "\"repeat\"",
     "\"front\"",
     "\"left\"",
+    "\"right\"",
     "\"back\"",
     "\"north\"",
     "\"south\"",
     "\"east\"",
-    "\" west\"",
+    "\"west\"",
     "\"around\"",
-    "\"ROBOT_R\"",
-    "\"VARS\"",
-    "\"PROCS\"",
+    "<MAY>",
+    "<MIN>",
+    "<NAME>",
+    "\",\"",
+    "\";\"",
     "\"[\"",
     "\"|\"",
     "\"]\"",

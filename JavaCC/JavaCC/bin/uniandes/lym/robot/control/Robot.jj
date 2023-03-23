@@ -43,41 +43,7 @@ public class Robot
 
 	String salida=new String();
 
-	public static void main(String args []) throws ParseException
-  {
-    Robot parser = new Robot(System.in);
-    while (true)
-    {
-      System.out.println("Reading from standard input...");
-      System.out.print("Enter an expression like \"1+(2+3)*4;\" :");
-      try
-      {
-        switch (exp.one_line())
-        {
-          case 0 : 
-          System.out.println("OK.");
-          break;
-          case 1 : 
-          System.out.println("Goodbye.");
-          break;
-          default : 
-          break;
-        }
-      }
-      catch (Exception e)
-      {
-        System.out.println("NOK.");
-        System.out.println(e.getMessage());
-        exp.ReInit(System.in);
-      }
-      catch (Error e)
-      {
-        System.out.println("Oops.");
-        System.out.println(e.getMessage());
-        break;
-      }
-    }
-  }
+	 
 }
 PARSER_END(Robot)
 
@@ -89,39 +55,87 @@ SKIP:
 	| "\n"
 }
 
-TOKEN: /* Nombres de Comandos de bajo nivel*/
-{
-
-			<MOV:  "Mov">
-		| 	<RIGHT: "RIGHT">
-		| 	<PUT: "Put">
-		| 	<PICK: "Pick">
-		|  < POP: "Pop" >
-		|  <GO: "GO" >
-        |  < HOP:  "HOP" >		
-
-}
-
 TOKEN: /* Nombres de objetos de bajo nivel*/
 {
 		<BALLOONS:  "BALLOONS" >
 		|	<CHIPS:     "CHIPS"  >	
 
 }
-
-
-
-TOKEN : /*Definición de un entero*/
+TOKEN : /*Definicion de un entero*/
 {
 		<NUM: (<DIGIT>)+ >
 		|  	<#DIGIT: ["0"-"9"] >
         
 }
+//PALABRAS ESPECIALES
+TOKEN:
+{
+  	< VARS: "VARS">
+| 	< PROCS: "PROCS">
+| 	< INIT: "ROBOT_R">
+}
+/*TOKENS DE LENGUAJE DE ALTO NIVEL */
 
 
+/* CONDICIONES y COMANDOS*/
+TOKEN:
+{
+		< FACING: "facing">
+	| 	< CANPUT: "canput">
+	| 	< CANPICK: "canpick" >
+	| 	< CANMOVEINDIR: "canmoveindir" >
+	| 	< CANJUMPINDIR: "canjumpindir" >
+	| 	< CANMOVETOTHE: "canmovetothe" >
+	| 	< CANJUMPTOTHE: "canjumptothe" >
+	| 	< NOT:	"not" >
+	
+	|   < ASSIGNTO: "assignto" >
+	|	< GOTO: "goto">
+	| 	< MOVE: "move">
+	| 	< TURN: "turn">
+	| 	< FACE: "face">
+	| 	< MOVETOTHE: "movetothe">
+	| 	< MOVEINDIR: "moveindir">
+	| 	< JUMPTOTHE: "jumptothe">
+	| 	< JUMPINDIR: "jumpindir">
+	|  	< NOP:"nop" >
+	|  	< PUT:"put" >
+	|  	< PICK:"pick" >
+}
 
-/* Que rayos es esto profe */
-//boolean command(uniandes.lym.robot.view.Console sistema) :
+/*CONTROL*/
+TOKEN:
+{
+ 	< IF: "if" >
+| 	< THEN: "then" >
+| 	< ELSE: "else" >
+| 	< WHILE: "while" >
+| 	< DO: "do" >
+| 	< REPEAT: "repeat" >
+}
+/*DIRECCIONES Y ORIENTACIONES*/
+TOKEN:
+{
+ 	< FRONT: "front" >
+| 	< LEFT: "left" >
+| 	< RIGHT: "right" >
+| 	< BACK: "back" >
+| 	< NORTH: "north" >
+| 	< SOUTH: "south" >
+| 	< EAST: "east">
+|	< WEST: "west" >
+| 	< AROUND: "around">
+}
+
+//Nombres
+TOKEN:
+{
+	< #MAY: ["A"-"Z"] >
+|   < #MIN: ["a"-"z"]>
+| 	< NAME: (<MAY>|<MIN>) (<MAY>|<MIN>|<NUM>)*>
+
+}
+
 boolean command(Console sistema):
 	{	
 		
@@ -129,22 +143,11 @@ boolean command(Console sistema):
 		salida=new String();	
 	}
 
-/* Reglas de producción???*/
-/* '|' son or's */
-/* PREGUNAR POR ESTA VAINA world.turnRight();salida = "Command: Turnright"; */
+/* REGLAS DE PRODUCCION*/
 	
 	{
 		(
-		  (
-		   <RIGHT> "(" ")" {world.turnRight();salida = "Command: Turnright";}
-		| 	<MOV>  "(" x=num() ")" {world.moveForward(x,false);salida = "Command: Moveforward ";}  
-		| 	<HOP>  "(" x=num() ")" {world.moveForward(x,true);salida = "Command:Jumpforward ";}
-		| 	<GO>  "(" x=num() "," y=num()")" {world.setPostion(x,y);salida = "Command:GO ";}  
-		|  <PUT> "("  put() ")"					  			
-		|  <PICK> "(" get()  ")"	
-	    |  < POP > "(" x=num() ")" {world.popBalloons(x); salida = "Comando:  Pop";}
-		) ";" 
-
+		 s0()
 		{
 		    try {
 	    			 Thread.sleep(900);
@@ -158,7 +161,7 @@ boolean command(Console sistema):
 
     	| <EOF> {return false;} 
 	}
-
+/*
 	void put() :
 	{
 		int f=1;	
@@ -179,7 +182,7 @@ void get() :
 
 	}
 
-	
+*/	
 	
 
 	/**
@@ -207,61 +210,12 @@ void get() :
 		}
 	}
 
-/*TOKENS DE LENGUAJE DE ALTO NIVEL */
-
-TOKEN:
+void s0 ():
+{}
 {
-	< #MAY: ["A"-"B"] >
-|   < #MIN: ["a"-"b"]>
-| 	< NAME: (<MAY>|<MIN>)+ (<MAY>|<MIN>|<NUM>)*>
-}
+	< INIT > (body())?
 
-/* CONDICIONES*/
-TOKEN:
-{
-		< FACING: "facing">
-	| 	< CANPUT: "canput">
-	| 	< CANPICK: "canpick" >
-	| 	< CANMOVEINDIR: "canmoveindir" >
-	| 	< CANJUMPINDIR: "canjumpindir" >
-	| 	< CANMOVETOTHE: "canmovetothe" >
-	| 	< CANJUMPTOTHE: "canjumptothe" >
-	| 	< NOT:	"not" >
-	|   < ASSIGNTO: "assignto" >
-	|	< GOTO: "goto">
-	| 	< MOVE: "move">
-	| 	< TURN: "turn">
-	| 	< FACE: "face">
-	| 	< MOVETOTHE: "movetothe">
-	| 	< MOVEINDIR: "moveindir">
-	| 	< JUMPTOTHE: "jumptothe">
-	| 	< JUMPINDIR: "jumpindir">
-	|  	< NOP:"nop" >
 }
-
-/*CONTROL*/
-TOKEN:
-{
- 	< IF: "if" >
-| 	< THEN: "then" >
-| 	< ELSE: "else" >
-| 	< WHILE: "while" >
-| 	< DO: "do" >
-| 	< REPEAT: "repeat" >
-}
-
-TOKEN:
-{
- 	< FRONT: "front" >
-| 	< LEFT: "left" >
-| 	< BACK: "back" >
-| 	< NORTH: "north" >
-| 	< SOUTH: "south" >
-| 	< EAST: "east">
-|	< WEST: " west" >
-| 	< AROUND: "around">
-}
-
 
 void X ():
 {}
@@ -289,13 +243,6 @@ void D ():
 	(< LEFT >|< RIGHT >|< AROUND >)
 }
 
-
-void s0 ():
-{}
-{
-	"ROBOT_R" body()
-}
-
 void body ():
 {}
 {
@@ -305,19 +252,20 @@ void body ():
 void vars ():
 { }
 {
-	"VARS" < NAME >(","< NAME >)* 
+	< VARS > < NAME >(","< NAME >)* ";"
 }
 
 void procs ():
 { }
 {
-	"PROCS" definition()
+	< PROCS > (definition())*
+	
 }
 
 void definition():
 {}
 {
-  "[" "|" params() "|" instructions() "]"
+  < NAME >"[" "|" (params())* "|" instructions() "]"
 }
 
 void params ():
@@ -329,7 +277,7 @@ void params ():
 void instructions ():
 { }
 {
-	(commands()|control()|call())(";"(commands()|control()|call())*)
+	(commands()|control()|call())(";"(commands()|control()|call()))*
 }
 
 void blocks ():
@@ -344,7 +292,7 @@ void commands ():
 {
 	assignto()
 | 	go_to()
-| 	put2()
+| 	put()
 | 	pick()
 | 	movetothe()
 | 	moveindir()
@@ -366,7 +314,7 @@ void go_to ():
 {
  	< GOTO > ":" X()"," X()
 }
-void put2 ():
+void put ():
 { }
 {
 	< PUT > ":" X() "," OBJ()
@@ -454,37 +402,37 @@ void facing ():
 void canput():
 {}
 {
-	<CANPUT> ":" <NAME> "," (<BALLOONS> | <CHIPS>)	
+	<CANPUT> ":" X() "," (<BALLOONS> | <CHIPS>)	
 }
 
 void canpick():
 {}
 {
-	<CANPICK> ":" <NAME> "," (<BALLOONS> | <CHIPS>)
+	<CANPICK> ":" X() "," (<BALLOONS> | <CHIPS>)
 }
 
 void canmoveindir():
 {}
 {
-	<CANMOVEINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
+	<CANMOVEINDIR> ":" X() "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
 }
 
 void canjumpindir():
 {}
 {
-	<CANJUMPINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
+	<CANJUMPINDIR> ":" X() "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
 }
 
 void canmovetothe():
 {}
 {
-	<CANMOVETOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
+	<CANMOVETOTHE> ":" X() "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
 }
 
 void canjumptothe():
 {}
 {
-	<CANJUMPTOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
+	<CANJUMPTOTHE> ":" X() "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
 }
 
 void not():

@@ -61,22 +61,21 @@ TOKEN: /* Nombres de objetos de bajo nivel*/
 		|	<CHIPS:     "CHIPS"  >	
 
 }
-TOKEN : /*Definición de un entero*/
+TOKEN : /*Definicion de un entero*/
 {
 		<NUM: (<DIGIT>)+ >
 		|  	<#DIGIT: ["0"-"9"] >
         
 }
-
-/*TOKENS DE LENGUAJE DE ALTO NIVEL */
-
+//PALABRAS ESPECIALES
 TOKEN:
 {
-	< #MAY: ["A"-"B"] >
-|   < #MIN: ["a"-"b"]>
-| 	< NAME: (<MAY>|<MIN>) (<MAY>|<MIN>|<NUM>)*>
+  	< VARS: "VARS">
+| 	< PROCS: "PROCS">
 | 	< INIT: "ROBOT_R">
 }
+/*TOKENS DE LENGUAJE DE ALTO NIVEL */
+
 
 /* CONDICIONES y COMANDOS*/
 TOKEN:
@@ -124,8 +123,17 @@ TOKEN:
 | 	< NORTH: "north" >
 | 	< SOUTH: "south" >
 | 	< EAST: "east">
-|	< WEST: " west" >
+|	< WEST: "west" >
 | 	< AROUND: "around">
+}
+
+//Nombres
+TOKEN:
+{
+	< #MAY: ["A"-"Z"] >
+|   < #MIN: ["a"-"z"]>
+| 	< NAME: (<MAY>|<MIN>) (<MAY>|<MIN>|<NUM>)*>
+
 }
 
 boolean command(Console sistema):
@@ -153,7 +161,7 @@ boolean command(Console sistema):
 
     	| <EOF> {return false;} 
 	}
-
+/*
 	void put() :
 	{
 		int f=1;	
@@ -174,7 +182,7 @@ void get() :
 
 	}
 
-	
+*/	
 	
 
 	/**
@@ -244,20 +252,20 @@ void body ():
 void vars ():
 { }
 {
-	"VARS" < NAME >(","< NAME >)* 
+	< VARS > < NAME >(","< NAME >)* ";"
 }
 
 void procs ():
 { }
 {
-	"PROCS" definition()
+	< PROCS > (definition())*
 	
 }
 
 void definition():
 {}
 {
-  "[" "|" params() "|" instructions() "]"
+  < NAME >"[" "|" (params())* "|" instructions() "]"
 }
 
 void params ():
@@ -269,7 +277,7 @@ void params ():
 void instructions ():
 { }
 {
-	(commands()|control()|call())(";"(commands()|control()|call())*)
+	(commands()|control()|call())(";"(commands()|control()|call()))*
 }
 
 void blocks ():
@@ -284,7 +292,7 @@ void commands ():
 {
 	assignto()
 | 	go_to()
-| 	put2()
+| 	put()
 | 	pick()
 | 	movetothe()
 | 	moveindir()
@@ -306,7 +314,7 @@ void go_to ():
 {
  	< GOTO > ":" X()"," X()
 }
-void put2 ():
+void put ():
 { }
 {
 	< PUT > ":" X() "," OBJ()
@@ -394,37 +402,37 @@ void facing ():
 void canput():
 {}
 {
-	<CANPUT> ":" <NAME> "," (<BALLOONS> | <CHIPS>)	
+	<CANPUT> ":" X() "," (<BALLOONS> | <CHIPS>)	
 }
 
 void canpick():
 {}
 {
-	<CANPICK> ":" <NAME> "," (<BALLOONS> | <CHIPS>)
+	<CANPICK> ":" X() "," (<BALLOONS> | <CHIPS>)
 }
 
 void canmoveindir():
 {}
 {
-	<CANMOVEINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
+	<CANMOVEINDIR> ":" X() "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
 }
 
 void canjumpindir():
 {}
 {
-	<CANJUMPINDIR> ":" <NAME> "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
+	<CANJUMPINDIR> ":" X() "," (<NORTH>|<SOUTH>|<EAST>|<WEST>)
 }
 
 void canmovetothe():
 {}
 {
-	<CANMOVETOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
+	<CANMOVETOTHE> ":" X() "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
 }
 
 void canjumptothe():
 {}
 {
-	<CANJUMPTOTHE> ":" <NAME> "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
+	<CANJUMPTOTHE> ":" X() "," (<FRONT>|<RIGHT>|<LEFT>|<BACK>)
 }
 
 void not():
