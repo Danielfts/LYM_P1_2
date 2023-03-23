@@ -65,6 +65,7 @@ import java.awt.Point;
 import java.io.*;
 import java.util.Vector;
 import java.util.LinkedList;
+import java.util.Hashtable;
 
 @SuppressWarnings("serial")
 public class Robot 
@@ -79,6 +80,8 @@ public class Robot
 	}
 
 	String salida=new String();
+
+	public Hashtable table;
 
 	 
 }
@@ -247,6 +250,7 @@ void get() :
 		}
 	}
 
+
 void s0 ():
 {}
 {
@@ -289,7 +293,7 @@ void body ():
 void vars ():
 { }
 {
-	< VARS > < NAME >(","< NAME >)* ";"
+	< VARS > (< NAME >  (","< NAME >)*)? ";"
 }
 
 void procs ():
@@ -347,9 +351,10 @@ void assignto ():
  	< ASSIGNTO > ":" < NUM > "," < NAME >
 }
 void go_to ():
-{ }
+{ int x,y;
+  salida= new String();}
 {
- 	< GOTO > ":" X()"," X()
+ 	< GOTO > ":" (x=num())"," (y=num())  {world.setPostion(x,y);salida = "Command:GO ";}  
 }
 void put ():
 { }

@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.io.*;
 import java.util.Vector;
 import java.util.LinkedList;
+import java.util.Hashtable;
 
 @SuppressWarnings("serial")
 public class Robot implements RobotConstants {
@@ -21,6 +22,8 @@ public class Robot implements RobotConstants {
         }
 
         String salida=new String();
+
+        public Hashtable table;
 
   final public boolean command(Console sistema) throws ParseException {
                 int x,y;
@@ -214,19 +217,26 @@ void get() :
 
   final public void vars() throws ParseException {
     jj_consume_token(VARS);
-    jj_consume_token(NAME);
-    label_2:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 50:
-        ;
-        break;
-      default:
-        jj_la1[8] = jj_gen;
-        break label_2;
-      }
-      jj_consume_token(50);
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case NAME:
       jj_consume_token(NAME);
+      label_2:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case 50:
+          ;
+          break;
+        default:
+          jj_la1[8] = jj_gen;
+          break label_2;
+        }
+        jj_consume_token(50);
+        jj_consume_token(NAME);
+      }
+      break;
+    default:
+      jj_la1[9] = jj_gen;
+      ;
     }
     jj_consume_token(51);
   }
@@ -240,7 +250,7 @@ void get() :
         ;
         break;
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[10] = jj_gen;
         break label_3;
       }
       definition();
@@ -258,7 +268,7 @@ void get() :
         ;
         break;
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[11] = jj_gen;
         break label_4;
       }
       params();
@@ -277,7 +287,7 @@ void get() :
         ;
         break;
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[12] = jj_gen;
         break label_5;
       }
       jj_consume_token(50);
@@ -310,7 +320,7 @@ void get() :
       call();
       break;
     default:
-      jj_la1[12] = jj_gen;
+      jj_la1[13] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -321,7 +331,7 @@ void get() :
         ;
         break;
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[14] = jj_gen;
         break label_6;
       }
       jj_consume_token(51);
@@ -349,7 +359,7 @@ void get() :
         call();
         break;
       default:
-        jj_la1[14] = jj_gen;
+        jj_la1[15] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -402,7 +412,7 @@ void get() :
       nop();
       break;
     default:
-      jj_la1[15] = jj_gen;
+      jj_la1[16] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -417,11 +427,14 @@ void get() :
   }
 
   final public void go_to() throws ParseException {
+  int x,y;
+  salida= new String();
     jj_consume_token(GOTO);
     jj_consume_token(55);
-    X();
+    x = num();
     jj_consume_token(50);
-    X();
+    y = num();
+                                              world.setPostion(x,y);salida = "Command:GO ";
   }
 
   final public void put() throws ParseException {
@@ -508,7 +521,7 @@ void get() :
       repeat();
       break;
     default:
-      jj_la1[16] = jj_gen;
+      jj_la1[17] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -554,7 +567,7 @@ void get() :
       not();
       break;
     default:
-      jj_la1[17] = jj_gen;
+      jj_la1[18] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -577,7 +590,7 @@ void get() :
       jj_consume_token(WEST);
       break;
     default:
-      jj_la1[18] = jj_gen;
+      jj_la1[19] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -596,7 +609,7 @@ void get() :
       jj_consume_token(CHIPS);
       break;
     default:
-      jj_la1[19] = jj_gen;
+      jj_la1[20] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -615,7 +628,7 @@ void get() :
       jj_consume_token(CHIPS);
       break;
     default:
-      jj_la1[20] = jj_gen;
+      jj_la1[21] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -640,7 +653,7 @@ void get() :
       jj_consume_token(WEST);
       break;
     default:
-      jj_la1[21] = jj_gen;
+      jj_la1[22] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -665,7 +678,7 @@ void get() :
       jj_consume_token(WEST);
       break;
     default:
-      jj_la1[22] = jj_gen;
+      jj_la1[23] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -690,7 +703,7 @@ void get() :
       jj_consume_token(BACK);
       break;
     default:
-      jj_la1[23] = jj_gen;
+      jj_la1[24] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -715,7 +728,7 @@ void get() :
       jj_consume_token(BACK);
       break;
     default:
-      jj_la1[24] = jj_gen;
+      jj_la1[25] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -758,7 +771,7 @@ void get() :
         ;
         break;
       default:
-        jj_la1[25] = jj_gen;
+        jj_la1[26] = jj_gen;
         break label_7;
       }
       jj_consume_token(50);
@@ -775,7 +788,7 @@ void get() :
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[26];
+  final private int[] jj_la1 = new int[27];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -783,10 +796,10 @@ void get() :
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x800,0x801,0x200,0x80,0x0,0x0,0x60,0x0,0x0,0x0,0x0,0x0,0xfff00000,0x0,0xfff00000,0xfff00000,0x0,0xff000,0x0,0x60,0x60,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_0 = new int[] {0x800,0x801,0x200,0x80,0x0,0x0,0x60,0x0,0x0,0x0,0x0,0x0,0x0,0xfff00000,0x0,0xfff00000,0xfff00000,0x0,0xff000,0x0,0x60,0x60,0x0,0x0,0x0,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x20000,0x3c0,0x3c00,0x0,0x4180,0x40000,0x20000,0x20000,0x40000,0x20029,0x80000,0x20029,0x0,0x29,0x0,0x3c00,0x0,0x0,0x3c00,0x3c00,0x3c0,0x3c0,0x40000,};
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x20000,0x3c0,0x3c00,0x0,0x4180,0x40000,0x20000,0x20000,0x20000,0x40000,0x20029,0x80000,0x20029,0x0,0x29,0x0,0x3c00,0x0,0x0,0x3c00,0x3c00,0x3c0,0x3c0,0x40000,};
    }
 
   /** Constructor with InputStream. */
@@ -800,7 +813,7 @@ void get() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 26; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -814,7 +827,7 @@ void get() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 26; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -824,7 +837,7 @@ void get() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 26; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -834,7 +847,7 @@ void get() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 26; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -843,7 +856,7 @@ void get() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 26; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -852,7 +865,7 @@ void get() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 26; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -908,7 +921,7 @@ void get() :
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 26; i++) {
+    for (int i = 0; i < 27; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
